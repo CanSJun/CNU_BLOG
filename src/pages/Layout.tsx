@@ -60,14 +60,17 @@ const Layout = () => {
       <Profile>
         {/*todo (1) 프로필 꾸미기*/}
         <div>
-          <ProfilePicture src="" alt="프로필 사진" />
+          <ProfilePicture src="https://static.solved.ac/uploads/profile/360x360/sj1191-picture-1676816125203.png" alt="프로필 사진" />
         </div>
         <div>
-          <Name>이름</Name>
-          <Description>설명</Description>
+          <Name>박시준</Name>
+          <Description>설명입니다.</Description>
         </div>
       </Profile>
-      <Nav>{/*todo (2) 메뉴 작성*/}</Nav>
+      <Nav>
+        <NavLink to="/">포스트</NavLink>
+        <NavLink to="/resume">소개</NavLink>
+      </Nav>
       <Outlet />
     </div>
   );

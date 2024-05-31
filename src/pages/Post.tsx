@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { deletePostById, getPostById } from '../api';
-import { IPost } from '../api/types';
 import NotFound from '../components/NotFound';
 import Tag from '../components/Tag';
+import useGetPostById from '../queries/useGetPostById.ts';
+import useDeletePostById from '../queries/useDeletePostById.ts';
 
 const Title = styled.h1`
   font-size: 3rem;
@@ -60,8 +59,55 @@ const Text = styled.p`
 `;
 
 const Post = () => {
-  // todo (4) post 컴포넌트 작성
-  return <div style={{ margin: '5.5rem auto', width: '700px' }}></div>;
+  const params = useParams();
+
+  const { postId = '' } = params;
+  const { data: post, isError, isLoading } = useGetPostById(postId);
+
+  const { mutate: deletePost } = useDeletePostById();
+
+  const clickDeleteButton = () => {
+    const result = window.confirm('정말로 게시글을 삭제하시겠습니까?');
+    if (result) {
+      deletePost({ postId });
+    }
+  };
+  if (isLoading) {
+    return <div>...불러오는 중...</div>;
+  }
+  if (!post || isError) {
+    return <NotFound />;
+  }
+
+  console.info(params, postId);
+  return (
+    <div style={{ margin: '5.5rem auto', width: '700px' }}>
+      <div>
+        <Title>{post?.title}</Title>
+        <Toolbar>
+          <Info>
+            <div>본문</div>
+          </Info>
+          <div>
+            <Link to="/write" state={{ postId }} style={{ marginRight: 10 }}>
+              <TextButton>수정</TextButton>
+            </Link>
+            <TextButton onClick={clickDeleteButton}>삭제</TextButton>
+          </div>
+        </Toolbar>
+        {post?.tag && (
+          <TagWrapper>
+            <Tag>#(post?.tag)</Tag>
+          </TagWrapper>
+        )}
+      </div>
+      <ContentsArea>
+        {post?.contents?.split('\n').map((text, index) => (
+          <Text key={index}>{text}</Text>
+        ))}
+      </ContentsArea>
+    </div>
+  );
 };
 
 export default Post;
