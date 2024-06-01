@@ -14,19 +14,17 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
-      <Router basename={'/CNU_Blog'}>
-        <Router>
-          <Routes>
-            <Route element={<Header />}>
-              <Route element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/resume" element={<Resume />} />
-              </Route>
-              <Route path="/posts/:postId" element={<Post />} />
+      <Router basename={'/CNU_Blog/'}>
+        <Routes>
+          <Route element={<Header />}>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/resume" element={<Resume />} />
             </Route>
-            <Route path="/write" element={<Write />} />
-          </Routes>
-        </Router>
+            <Route path="/posts/:postId" element={<Post />} />
+          </Route>
+          <Route path="/write" element={<Write />} />
+        </Routes>
       </Router>
     </QueryClientProvider>
   );
